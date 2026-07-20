@@ -1,0 +1,111 @@
+<mvc:View controllerName="materialmanagement.controller.Screen1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+    <Page id="page" title="{i18n>title}" showHeader="true">
+        <headerContent>
+            <Button icon="sap-icon://refresh" type="Transparent" tooltip="{i18n>refresh}" press="onRefresh" />
+        </headerContent>
+        <content>
+            <IconTabBar id="mainTabs" class="sapUiResponsiveContentPadding" expandable="false">
+                <items>
+                    <IconTabFilter key="overview" text="{i18n>overview}" icon="sap-icon://home">
+                        <VBox class="sapUiSmallMargin">
+                            <ObjectHeader title="{i18n>welcomeTitle}" intro="{i18n>welcomeIntro}" icon="sap-icon://cart-approval" />
+                            <HBox wrap="Wrap" class="summaryCards">
+                                <VBox class="summaryCard">
+                                    <ObjectNumber number="{= ${/MaterialSet/$count} || 0 }" unit="{i18n>materials}" state="Information" />
+                                    <Text text="{i18n>materialCatalog}" />
+                                </VBox>
+                                <VBox class="summaryCard">
+                                    <ObjectNumber number="{= ${/StockSet/$count} || 0 }" unit="{i18n>stockLines}" state="Success" />
+                                    <Text text="{i18n>stockOverview}" />
+                                </VBox>
+                                <VBox class="summaryCard">
+                                    <ObjectNumber number="{= ${/PurchaseOrderSet/$count} || 0 }" unit="{i18n>purchaseOrders}" state="Warning" />
+                                    <Text text="{i18n>orderOverview}" />
+                                </VBox>
+                            </HBox>
+                            <Title text="{i18n>recentOrders}" level="H3" class="sapUiMediumMarginTop" />
+                            <Table id="orderTable" items="{/PurchaseOrderSet}" growing="true" growingThreshold="10" noDataText="{i18n>noOrders}">
+                                <columns>
+                                    <Column><Text text="{i18n>poNumber}" /></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>supplier}" /></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>companyCode}" /></Column>
+                                    <Column hAlign="End"><Text text="{i18n>documentDate}" /></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem type="Active" press="onPurchaseOrderPress">
+                                        <cells>
+                                            <ObjectIdentifier title="{Ebeln}" />
+                                            <Text text="{Lifnr}" />
+                                            <Text text="{Bukrs}" />
+                                            <Text text="{Bedat}" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
+                    </IconTabFilter>
+                    <IconTabFilter key="materials" text="{i18n>materialsStock}" icon="sap-icon://product">
+                        <VBox class="sapUiSmallMargin">
+                            <Title text="{i18n>materialCatalog}" level="H3" />
+                            <Table id="materialTable" items="{/MaterialSet}" growing="true" growingThreshold="20" noDataText="{i18n>noMaterials}">
+                                <headerToolbar><Toolbar><ToolbarSpacer /><SearchField width="12rem" placeholder="{i18n>searchMaterial}" liveChange="onMaterialSearch" /></Toolbar></headerToolbar>
+                                <columns>
+                                    <Column><Text text="{i18n>material}" /></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>materialType}" /></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>materialGroup}" /></Column>
+                                    <Column hAlign="End"><Text text="{i18n>baseUnit}" /></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem><cells><Text text="{Matnr}" /><Text text="{Mtart}" /><Text text="{Matkl}" /><Text text="{Meins}" /></cells></ColumnListItem>
+                                </items>
+                            </Table>
+                            <Title text="{i18n>stockOverview}" level="H3" class="sapUiMediumMarginTop" />
+                            <Table id="stockTable" items="{/StockSet}" growing="true" growingThreshold="20" noDataText="{i18n>noStock}">
+                            <headerToolbar><Toolbar><Title text="{i18n>stockOverview}" /><ToolbarSpacer /><SearchField width="12rem" liveChange="onStockSearch" /></Toolbar></headerToolbar>
+                            <columns>
+                                <Column><Text text="{i18n>material}" /></Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>plant}" /></Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>storageLocation}" /></Column>
+                                <Column hAlign="End"><Text text="{i18n>availableStock}" /></Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells><Text text="{Matnr}" /><Text text="{Werks}" /><Text text="{Lgort}" /><ObjectNumber number="{Labst}" /></cells>
+                                </ColumnListItem>
+                            </items>
+                            </Table>
+                        </VBox>
+                    </IconTabFilter>
+                    <IconTabFilter key="goodsReceipt" text="{i18n>goodsReceipts}" icon="sap-icon://shipping-status">
+                        <VBox class="sapUiSmallMargin">
+                            <Toolbar><Title text="{i18n>goodsReceipts}" /><ToolbarSpacer /><Button text="{i18n>postGoodsReceipt}" icon="sap-icon://add" type="Emphasized" press="onOpenGoodsReceipt" /></Toolbar>
+                            <Table id="goodsReceiptTable" items="{/GoodsReceiptSet}" growing="true" growingThreshold="20" noDataText="{i18n>noGoodsReceipts}">
+                                <columns>
+                                    <Column><Text text="{i18n>poNumber}" /></Column>
+                                    <Column><Text text="{i18n>poItem}" /></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>goodsReceiptDocument}" /></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>postingDate}" /></Column>
+                                    <Column hAlign="End"><Text text="{i18n>quantity}" /></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem><cells><Text text="{Ebeln}" /><Text text="{Ebelp}" /><Text text="{Belnr}" /><Text text="{Budat}" /><ObjectNumber number="{Menge}" /></cells></ColumnListItem>
+                                </items>
+                            </Table>
+                        </VBox>
+                    </IconTabFilter>
+                    <IconTabFilter key="create" text="{i18n>createOrder}" icon="sap-icon://add-document">
+                        <VBox class="sapUiMediumMargin">
+                            <Title text="{i18n>createOrderTitle}" level="H2" />
+                            <Text text="{i18n>createOrderHint}" class="sapUiTinyMarginBottom" />
+                            <Button text="{i18n>createOrder}" icon="sap-icon://add" type="Emphasized" press="onOpenCreateOrder" />
+                        </VBox>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
+    </Page>
+</mvc:View>

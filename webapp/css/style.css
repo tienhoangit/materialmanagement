@@ -1,0 +1,4 @@
+.summaryCards { gap: 0.75rem; }
+.summaryCard { background: var(--sapTile_Background); border: 1px solid var(--sapTile_BorderColor); border-radius: 0.75rem; box-shadow: var(--sapContent_Shadow0); min-width: 10rem; padding: 0.85rem 1rem; }
+.summaryCard .sapMObjectNumber { display: block; margin-bottom: 0.35rem; }
+.summaryCard .sapMText { color: var(--sapContent_LabelColor); }

@@ -1,0 +1,16 @@
+
+> materialmanagement@0.0.1 start
+> fiori run --open "test/flp.html#app-preview"
+
+[32minfo[39m fiori-tools-proxy Using UI5 version 1.108.33 based on manifest.json
+[33mwarn[39m fiori-tools-proxy Unable to check if the 1.108.33 is available on the SAPUI5 SDK. Proceeding with loading the preview with this version.
+[33mwarn[39m fiori-tools-proxy Unable to check if the 1.108.33 is available on the SAPUI5 SDK. Proceeding with loading the preview with this version.
+[32minfo[39m fiori-tools-proxy Starting fiori-tools-proxy using following configuration:
+[32minfo[39m fiori-tools-proxy proxy: 'undefined'
+[32minfo[39m fiori-tools-proxy ignoreCertErrors: 'false'
+[32minfo[39m fiori-tools-proxy backend: [{"path":"/sap","url":"https://s40lp1.ucc.cit.tum.de:8100"}]
+[32minfo[39m fiori-tools-proxy ui5: [{"path":"/resources","url":"https://ui5.sap.com","version":"1.108.33"},{"path":"/test-resources","url":"https://ui5.sap.com","version":"1.108.33"}]
+[32minfo[39m fiori-tools-proxy debug: 'false'
+[33mwarn[39m backend-proxy-middleware No credential found. Service: [fiori/v2/system], Key: [https://s40lp1.ucc.cit.tum.de:8100]
+[33mwarn[39m backend-proxy-middleware No credential found. Service: [fiori/v2/system], Key: [https://s40lp1.ucc.cit.tum.de:8100]
+[32minfo[39m backend-proxy-middleware Backend proxy created for https://s40lp1.ucc.cit.tum.de:8100
