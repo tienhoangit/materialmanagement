@@ -19,55 +19,86 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
     "use strict";
 
     return Controller.extend("materialmanagement.controller.Screen1", {
+        /**
+         * Hàm onInit() - Vòng đời (Lifecycle Hook) của Controller.
+         * Được UI5 framework gọi một lần duy nhất khi View tương ứng (`Screen1.view.xml`) được khởi tạo.
+         * Nơi lý tưởng để thiết lập các Models, khởi tạo dữ liệu mặc định và gán event listener.
+         */
         onInit: function () {
+            // Lấy tham chiếu đến OData Model chính (thường định nghĩa trong manifest.json với tên rỗng "")
             this._oModel = this.getOwnerComponent().getModel();
 
+            // Khởi tạo một JSONModel (Model cục bộ ở phía Client) có tên là "viewModel".
+            // Model này đóng vai trò như một State Management lưu trữ các biến đếm hiển thị trên UI.
+            // Bằng cách bind dữ liệu này vào View, giao diện sẽ tự động cập nhật khi các con số này thay đổi.
             var oViewModel = new JSONModel({
-                materialCount: 0,
-                stockCount: 0,
-                poCount: 0
+                materialCount: 0, // Tổng số lượng Vật tư
+                stockCount: 0,    // Tổng số lượng Tồn kho
+                poCount: 0        // Tổng số lượng Đơn mua hàng (PO)
             });
             this.getView().setModel(oViewModel, "viewModel");
 
+            // Khởi tạo một JSONModel khác có tên "createItems".
+            // Model này dùng riêng cho chức năng Tạo mới Đơn mua hàng (Create Purchase Order)
+            // để lưu trữ tạm thời danh sách các Dòng chi tiết (Items) người dùng vừa thêm vào trước khi Submit.
             this._oCreateItemsModel = new JSONModel({ items: [] });
             this.getView().setModel(this._oCreateItemsModel, "createItems");
 
+            // Gọi hàm đếm dữ liệu tổng quan từ Backend SAP
             this._loadSummaryCounts();
         },
 
+        /**
+         * Xử lý sự kiện khi người dùng nhấn nút Refresh.
+         * Tải lại toàn bộ dữ liệu OData và cập nhật lại bộ đếm.
+         */
         onRefresh: function () {
             this._oModel.refresh(true);
             this._loadSummaryCounts();
             MessageToast.show(this.getResourceBundle().getText("refreshed"));
         },
 
+        /**
+         * Gọi OData API với tham số `$count` để đếm tổng số lượng bản ghi của 3 thực thể (Material, Stock, PO).
+         * Dữ liệu trả về sẽ được dùng để cập nhật các biến đếm trong `viewModel`, từ đó hiển thị lên các 
+         * thẻ tóm tắt (Summary Cards) trên giao diện Overview.
+         */
         _loadSummaryCounts: function () {
             var oViewModel = this.getView().getModel("viewModel");
             var oModel = this.getOwnerComponent().getModel();
+            
+            // Kiểm tra an toàn xem OData model có tồn tại và có phương thức read() hay không
             if (!oModel || typeof oModel.read !== "function") {
                 return;
             }
 
+            // --- 1. Đếm số lượng Vật tư (Material) ---
+            // Gửi GET request tới đường dẫn `/MaterialSet/$count`
             oModel.read("/MaterialSet/$count", {
                 success: function (iCount) {
+                    // Nếu Backend trả về số lượng thành công, tiến hành parse sang số nguyên
+                    // và ghi đè vào thuộc tính `/materialCount` của viewModel.
                     if (iCount !== undefined && iCount !== null) {
                         oViewModel.setProperty("/materialCount", parseInt(iCount, 10) || 0);
                     }
                 },
                 error: function () {
-                    // Fallback handled by table updateFinished
+                    // Nếu lỗi (ví dụ rớt mạng), bỏ qua. Tổng số sẽ được cập nhật lại 
+                    // khi Table tải xong dữ liệu (thông qua hàm updateFinished).
                 }
             });
+            
+            // --- 2. Đếm số lượng Tồn kho (Stock) ---
             oModel.read("/StockSet/$count", {
                 success: function (iCount) {
                     if (iCount !== undefined && iCount !== null) {
                         oViewModel.setProperty("/stockCount", parseInt(iCount, 10) || 0);
                     }
                 },
-                error: function () {
-                    // Fallback handled by table updateFinished
-                }
+                error: function () {}
             });
+            
+            // --- 3. Đếm số lượng Đơn mua hàng (Purchase Order) ---
             oModel.read("/PurchaseOrderSet/$count", {
                 success: function (iCount) {
                     if (iCount !== undefined && iCount !== null) {
@@ -101,6 +132,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
             }
         },
 
+        /**
+         * Tìm kiếm trong danh sách Tồn kho (Stock).
+         * Lọc dữ liệu Local dựa trên trường Matnr.
+         */
         onStockSearch: function (oEvent) {
             var sValue = oEvent.getParameter("newValue");
             var oBinding = this.byId("stockTable").getBinding("items");
@@ -111,6 +146,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
             }
         },
 
+        /**
+         * Tìm kiếm trong danh sách Vật tư (Material).
+         * Lọc dữ liệu Local dựa trên trường Matnr.
+         */
         onMaterialSearch: function (oEvent) {
             var sValue = oEvent.getParameter("newValue");
             var oBinding = this.byId("materialTable").getBinding("items");
@@ -121,6 +160,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
             }
         },
 
+        /**
+         * Xử lý sự kiện tìm kiếm Đơn mua hàng (Purchase Order).
+         * Lấy từ khóa và lưu vào viewModel, sau đó gọi hàm _applyPOFilters để fetch từ server.
+         */
         onPOSearch: function (oEvent) {
             var oSearchControl = this.byId("searchPoInput");
             var sQuery = oSearchControl ? oSearchControl.getValue() : "";
@@ -133,6 +176,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
             this._applyPOFilters();
         },
 
+        /**
+         * Thực thi tìm kiếm Purchase Order bằng cách gọi OData request ().
+         * Do backend có giới hạn, hàm này xử lý filter eq (exact match) thay vì contains.
+         */
         _applyPOFilters: function () {
             var sSearchTarget = this._sPoQuery ? String(this._sPoQuery).trim() : null;
             var oSelectControl = this.byId("selectPoSearchField");
@@ -261,6 +308,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
             });
         },
 
+        /**
+         * Tìm kiếm trong danh sách Nhập kho (Goods Receipt).
+         * Lọc Local trên 3 trường Ebeln, Belnr và Ebelp.
+         */
         onGRSearch: function (oEvent) {
             var sValue = oEvent.getParameter("newValue") || "";
             var oBinding = this.byId("goodsReceiptTable").getBinding("items");
@@ -282,6 +333,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
             oBinding.filter(aFilters, FilterType.Application);
         },
 
+        /**
+         * Xử lý khi người dùng click vào một dòng Purchase Order.
+         * Mở popup hiển thị chi tiết PO và danh sách các Item bên trong.
+         */
         onPurchaseOrderPress: function (oEvent) {
             if (!oEvent) {
                 return;
@@ -304,6 +359,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
 
         /**
          * Dynamic SAP F4 Value Help Dialog
+         */
+        /**
+         * Hàm dùng chung để mở dialog Value Help (F4) cho các trường nhập liệu.
+         * Lấy dữ liệu từ entity set truyền vào và hiển thị danh sách chọn.
          */
         onValueHelp: function (oEvent, sEntitySet, sKeyField, sTitle, sDescField) {
             var oInput = oEvent.getSource();
@@ -495,6 +554,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
         },
 
         // --- CREATE ORDER DIALOG ---
+        /**
+         * Mở Fragment (Dialog) để tạo mới Đơn mua hàng (Purchase Order).
+         * Reset lại dữ liệu khởi tạo ban đầu.
+         */
         onOpenCreateOrder: function () {
             this._oCreateItemsModel.setProperty("/items", []);
             this._addPoItem();
@@ -525,12 +588,18 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
             this.byId("createOrderDialog").close();
         },
 
+        /**
+         * Thêm một dòng (Item) trắng mới vào bảng chi tiết khi tạo Purchase Order.
+         */
         _addPoItem: function () {
             var aItems = this._oCreateItemsModel.getProperty("/items");
             aItems.push({ Matnr: "", Txz01: "", Werks: "", Lgort: "", Menge: "", Meins: "EA", Netpr: "" });
             this._oCreateItemsModel.setProperty("/items", aItems);
         },
 
+        /**
+         * Xóa một dòng (Item) khỏi bảng chi tiết khi tạo Purchase Order.
+         */
         _removePoItem: function (oEvent) {
             var sPath = oEvent.getSource().getBindingContext("createItems").getPath();
             var iIndex = Number(sPath.split("/").pop());
@@ -539,6 +608,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
             this._oCreateItemsModel.setProperty("/items", aItems);
         },
 
+        /**
+         * Xử lý sự kiện Lưu (Create) Purchase Order.
+         * Xác thực dữ liệu đầu vào và gửi OData POST request (Deep Insert) tới server.
+         */
         onCreateOrder: function () {
             var oCompanyCodeInput = this.byId("createCompanyCodeInput");
             var oSupplierInput = this.byId("createSupplierInput");
@@ -600,6 +673,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
         },
 
         // --- GOODS RECEIPT DIALOG ---
+        /**
+         * Mở Dialog Nhập kho (Goods Receipt).
+         * Cho phép truyền sẵn mã PO (sPurchaseOrder) vào ô nhập liệu.
+         */
         onOpenGoodsReceipt: function (sPurchaseOrder) {
             var sEbeln = "";
             var sEbelp = "";
@@ -633,6 +710,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
             this.byId("goodsReceiptDialog").close();
         },
 
+        /**
+         * Xử lý Ghi sổ Nhập kho (Post Goods Receipt).
+         * Gửi OData POST request tới GoodsReceiptSet.
+         */
         onPostGoodsReceipt: function () {
             var oPoInput = this.byId("grPoInput");
             var oItemInput = this.byId("grItemInput");
@@ -673,6 +754,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
             });
         },
 
+        /**
+         * Hàm tiện ích kiểm tra tính hợp lệ của trường nhập liệu.
+         * Nếu trống, set trạng thái lỗi (Error) màu đỏ.
+         */
         _validateField: function (oControl, sValue) {
             if (!sValue || !String(sValue).trim()) {
                 if (oControl && oControl.setValueState) {
@@ -687,6 +772,10 @@ function (Controller, Fragment, Filter, FilterOperator, FilterType, SelectDialog
             return true;
         },
 
+        /**
+         * Trích xuất thông báo lỗi từ response trả về của OData.
+         * Nếu không parse được, dùng message mặc định.
+         */
         _getODataErrorMessage: function (oError, sFallbackKey) {
             try {
                 var oResponse = JSON.parse(oError.responseText);

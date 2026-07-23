@@ -10,6 +10,7 @@
         <content>
             <IconTabBar id="mainTabs" class="sapUiResponsiveContentPadding" expandable="false">
                 <items>
+                    <!-- TAB OVERVIEW: Hiển thị các thẻ tóm tắt (số lượng) và danh sách Purchase Order mới nhất -->
                     <IconTabFilter key="overview" text="{i18n>overview}" icon="sap-icon://home">
                         <VBox class="sapUiSmallMargin">
                             <ObjectHeader title="{i18n>welcomeTitle}" intro="{i18n>welcomeIntro}" icon="sap-icon://cart-approval" />
@@ -61,6 +62,7 @@
                             </Table>
                         </VBox>
                     </IconTabFilter>
+                    <!-- TAB MATERIALS: Hiển thị danh mục Vật tư (Material) và thanh tìm kiếm theo Matnr -->
                     <IconTabFilter key="materials" text="{i18n>materialsStock}" icon="sap-icon://product">
                         <VBox class="sapUiSmallMargin">
                             <Title text="{i18n>materialCatalog}" level="H3" />
@@ -93,6 +95,7 @@
                             </Table>
                         </VBox>
                     </IconTabFilter>
+                    <!-- TAB GOODS RECEIPTS: Hiển thị danh sách Phiếu nhập kho (Goods Receipt) -->
                     <IconTabFilter key="goodsReceipt" text="{i18n>goodsReceipts}" icon="sap-icon://shipping-status">
                         <VBox class="sapUiSmallMargin">
                             <Table id="goodsReceiptTable" items="{/GoodsReceiptSet}" growing="true" growingThreshold="20" noDataText="{i18n>noGoodsReceipts}">
