@@ -1,0 +1,132 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Dialog
+        id="createOrderDialog"
+        title="{i18n>createOrder}"
+        contentWidth="64rem">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <Label text="{i18n>companyCode}" required="true" />
+                <Input
+                    id="createCompanyCodeInput"
+                    placeholder="{i18n>companyCode}"
+                    showValueHelp="true"
+                    maxLength="4"
+                    valueHelpRequest=".onValueHelpCompanyCode"
+                    liveChange=".onInputLiveChange" />
+
+                <Label text="{i18n>supplier}" required="true" />
+                <Input
+                    id="createSupplierInput"
+                    placeholder="{i18n>supplierPlaceholder}"
+                    showValueHelp="true"
+                    maxLength="10"
+                    valueHelpRequest=".onValueHelpSupplier"
+                    liveChange=".onInputLiveChange" />
+
+                <Label text="{i18n>documentType}" required="true" />
+                <Select id="createDocumentTypeSelect" selectedKey="NB">
+                    <items>
+                        <core:Item key="NB" text="NB - Standard PO" />
+                        <core:Item key="FO" text="FO - Framework Order" />
+                        <core:Item key="UB" text="UB - Stock Transport Order" />
+                    </items>
+                </Select>
+
+                <Label text="{i18n>purchasingOrg}" required="true" />
+                <Input
+                    id="createPurchasingOrgInput"
+                    placeholder="{i18n>purchasingOrgPlaceholder}"
+                    showValueHelp="true"
+                    maxLength="4"
+                    valueHelpRequest=".onValueHelpPurchasingOrg"
+                    liveChange=".onInputLiveChange" />
+
+                <Label text="{i18n>purchasingGroup}" required="true" />
+                <Input
+                    id="createPurchasingGroupInput"
+                    placeholder="{i18n>purchasingGroup}"
+                    showValueHelp="true"
+                    maxLength="3"
+                    valueHelpRequest=".onValueHelpPurchasingGroup"
+                    liveChange=".onInputLiveChange" />
+
+                <Label text="{i18n>currency}" required="true" />
+                <Select id="createCurrencySelect" selectedKey="EUR">
+                    <items>
+                        <core:Item key="EUR" text="EUR - Euro" />
+                        <core:Item key="USD" text="USD - US Dollar" />
+                        <core:Item key="VND" text="VND - Vietnamese Dong" />
+                        <core:Item key="JPY" text="JPY - Japanese Yen" />
+                    </items>
+                </Select>
+
+                <Table id="createPoItemsTable" width="100%" items="{createItems>/items}">
+                    <headerToolbar>
+                        <Toolbar>
+                            <Text text="{i18n>poItems}" />
+                            <ToolbarSpacer />
+                            <Button text="{i18n>addItem}" icon="sap-icon://add" press="._addPoItem" />
+                        </Toolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column><Text text="{i18n>material}" /></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>itemDescription}" /></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>plant}" /></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>storageLocation}" /></Column>
+                        <Column><Text text="{i18n>quantity}" /></Column>
+                        <Column><Text text="{i18n>quantityUnit}" /></Column>
+                        <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>netPrice}" /></Column>
+                        <Column><Text text="" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Input
+                                    value="{createItems>Matnr}"
+                                    placeholder="{i18n>material}"
+                                    showValueHelp="true"
+                                    maxLength="40"
+                                    valueHelpRequest=".onValueHelpItemMaterial" />
+                                <Input value="{createItems>Txz01}" placeholder="{i18n>materialDescription}" maxLength="40" />
+                                <Input
+                                    value="{createItems>Werks}"
+                                    placeholder="{i18n>plant}"
+                                    showValueHelp="true"
+                                    maxLength="4"
+                                    valueHelpRequest=".onValueHelpItemPlant" />
+                                <Input
+                                    value="{createItems>Lgort}"
+                                    placeholder="{i18n>storageLocation}"
+                                    showValueHelp="true"
+                                    maxLength="4"
+                                    valueHelpRequest=".onValueHelpItemStorageLocation" />
+                                <Input value="{createItems>Menge}" placeholder="{i18n>quantity}" type="Number" />
+                                <Select selectedKey="{createItems>Meins}">
+                                    <items>
+                                        <core:Item key="EA" text="EA (Each)" />
+                                        <core:Item key="ST" text="ST (Piece)" />
+                                        <core:Item key="KG" text="KG (Kilogram)" />
+                                        <core:Item key="M" text="M (Meter)" />
+                                        <core:Item key="L" text="L (Liter)" />
+                                        <core:Item key="PAK" text="PAK (Pack)" />
+                                        <core:Item key="BOX" text="BOX (Box)" />
+                                    </items>
+                                </Select>
+                                <Input value="{createItems>Netpr}" placeholder="{i18n>netPrice}" type="Number" />
+                                <Button icon="sap-icon://decline" type="Transparent" tooltip="{i18n>removeItem}" press="._removePoItem" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </content>
+        <beginButton>
+            <Button text="{i18n>save}" type="Emphasized" press=".onCreateOrder" />
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>cancel}" press=".onCloseCreateDialog" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

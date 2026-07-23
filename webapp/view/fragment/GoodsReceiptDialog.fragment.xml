@@ -1,0 +1,29 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Dialog
+        id="goodsReceiptDialog"
+        title="{i18n>goodsReceiptTitle}"
+        contentWidth="25rem">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <Text text="{i18n>goodsReceiptHint}" />
+
+                <Label text="{i18n>poNumber}" required="true" />
+                <Input id="grPoInput" maxLength="10" liveChange=".onInputLiveChange" />
+
+                <Label text="{i18n>poItem}" required="true" />
+                <Input id="grItemInput" maxLength="5" liveChange=".onInputLiveChange" />
+
+                <Label text="{i18n>quantity}" required="true" />
+                <Input id="grQuantityInput" type="Number" liveChange=".onInputLiveChange" />
+            </VBox>
+        </content>
+        <beginButton>
+            <Button text="{i18n>save}" type="Emphasized" press=".onPostGoodsReceipt" />
+        </beginButton>
+        <endButton>
+            <Button text="{i18n>cancel}" press=".onCloseGoodsReceiptDialog" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

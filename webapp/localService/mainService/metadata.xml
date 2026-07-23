@@ -9,23 +9,23 @@
                     <PropertyRef Name="Ebelp"/>
                     <PropertyRef Name="Belnr"/>
                 </Key>
-                <Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Einkaufsbeleg" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Ebelp" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Position" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Vgabe" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Vorgangsart" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Gjahr" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="MatBelegjahr" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Belnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Materialbeleg" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Budat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Buchungsdatum" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Menge" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Menge" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Einkaufsbeleg" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Ebelp" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Position" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Vgabe" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="Vorgangsart" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Gjahr" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="MatBelegjahr" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Belnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Materialbeleg" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Budat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Buchungsdatum" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Menge" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Menge" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
             </EntityType>
             <EntityType Name="Material" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Matnr"/>
                 </Key>
-                <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Ersda" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Angelegt am" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Mtart" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Materialart" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Matkl" Type="Edm.String" Nullable="false" MaxLength="9" sap:unicode="false" sap:label="Warengruppe" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Meins" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Basis-ME" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="unit-of-measure"/>
+                <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Ersda" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="Angelegt am" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Mtart" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Materialart" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Matkl" Type="Edm.String" Nullable="false" MaxLength="9" sap:unicode="false" sap:label="Warengruppe" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Meins" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Basis-ME" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true" sap:semantics="unit-of-measure"/>
             </EntityType>
             <EntityType Name="Stock" sap:content-version="1">
                 <Key>
@@ -33,38 +33,38 @@
                     <PropertyRef Name="Werks"/>
                     <PropertyRef Name="Lgort"/>
                 </Key>
-                <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Werk" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Lgort" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Lagerort" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Labst" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Frei verwendbar" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Werk" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Lgort" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Lagerort" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Labst" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:label="Frei verwendbar" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
             </EntityType>
             <EntityType Name="PurchaseOrder" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Ebeln"/>
                 </Key>
-                <Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Einkaufsbeleg" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Bukrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Buchungskreis" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Bsart" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Belegart" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Lieferant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Ekorg" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Einkaufsorg" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Ekgrp" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Einkäufergrp" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Währung" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="currency-code"/>
-                <Property Name="Bedat" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Belegdatum" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Einkaufsbeleg" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Bukrs" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Buchungskreis" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Bsart" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Belegart" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Lieferant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Ekorg" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Einkaufsorg" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Ekgrp" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Einkäufergrp" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Waers" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Währung" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true" sap:semantics="currency-code"/>
+                <Property Name="Bedat" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Belegdatum" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
             </EntityType>
             <EntityType Name="POItem" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Ebeln"/>
                     <PropertyRef Name="Ebelp"/>
                 </Key>
-                <Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Einkaufsbeleg" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Ebelp" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Position" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Txz01" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Kurztext" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Werk" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Lgort" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Lagerort" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Menge" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:unit="Meins" sap:label="Bestellmenge" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-                <Property Name="Meins" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Bestell-ME" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false" sap:semantics="unit-of-measure"/>
-                <Property Name="Netpr" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="2" sap:unicode="false" sap:label="Nettopreis" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Einkaufsbeleg" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Ebelp" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="Position" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Txz01" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Kurztext" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Werk" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Lgort" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Lagerort" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Menge" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:unit="Meins" sap:label="Bestellmenge" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
+                <Property Name="Meins" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Bestell-ME" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true" sap:semantics="unit-of-measure"/>
+                <Property Name="Netpr" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="2" sap:unicode="false" sap:label="Nettopreis" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="true"/>
             </EntityType>
             <EntityContainer Name="Z_DEV376_PROJECT_SRV_01_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
                 <EntitySet Name="GoodsReceiptSet" EntityType="Z_DEV376_PROJECT_SRV_01.GoodsReceipt" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>

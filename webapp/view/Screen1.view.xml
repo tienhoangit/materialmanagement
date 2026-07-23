@@ -15,20 +15,33 @@
                             <ObjectHeader title="{i18n>welcomeTitle}" intro="{i18n>welcomeIntro}" icon="sap-icon://cart-approval" />
                             <HBox wrap="Wrap" class="summaryCards">
                                 <VBox class="summaryCard">
-                                    <ObjectNumber number="{= ${/MaterialSet/$count} || 0 }" unit="{i18n>materials}" state="Information" />
+                                    <ObjectNumber number="{viewModel>/materialCount}" unit="{i18n>materials}" state="Information" />
                                     <Text text="{i18n>materialCatalog}" />
                                 </VBox>
                                 <VBox class="summaryCard">
-                                    <ObjectNumber number="{= ${/StockSet/$count} || 0 }" unit="{i18n>stockLines}" state="Success" />
+                                    <ObjectNumber number="{viewModel>/stockCount}" unit="{i18n>stockLines}" state="Success" />
                                     <Text text="{i18n>stockOverview}" />
                                 </VBox>
                                 <VBox class="summaryCard">
-                                    <ObjectNumber number="{= ${/PurchaseOrderSet/$count} || 0 }" unit="{i18n>purchaseOrders}" state="Warning" />
+                                    <ObjectNumber number="{viewModel>/poCount}" unit="{i18n>purchaseOrders}" state="Warning" />
                                     <Text text="{i18n>orderOverview}" />
                                 </VBox>
                             </HBox>
-                            <Title text="{i18n>recentOrders}" level="H3" class="sapUiMediumMarginTop" />
-                            <Table id="orderTable" items="{/PurchaseOrderSet}" growing="true" growingThreshold="10" noDataText="{i18n>noOrders}">
+                            <Table id="orderTable" items="{/PurchaseOrderSet}" growing="true" growingThreshold="10" noDataText="{i18n>noOrders}" updateFinished="onOrderTableUpdateFinished">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <Title text="{i18n>recentOrders}" level="H3" />
+                                        <ToolbarSpacer />
+                                        <Select id="selectPoSearchField" change="onPOSearch" selectedKey="Ebeln" width="10rem">
+                                            <items>
+                                                <core:Item key="Ebeln" text="{i18n>poNumber}" />
+                                                <core:Item key="Lifnr" text="{i18n>supplier}" />
+                                                <core:Item key="Bukrs" text="{i18n>companyCode}" />
+                                            </items>
+                                        </Select>
+                                        <SearchField id="searchPoInput" width="14rem" placeholder="{i18n>searchPoPlaceholder}" search="onPOSearch" liveChange="onPOSearch" />
+                                    </OverflowToolbar>
+                                </headerToolbar>
                                 <columns>
                                     <Column><Text text="{i18n>poNumber}" /></Column>
                                     <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>supplier}" /></Column>
@@ -38,7 +51,7 @@
                                 <items>
                                     <ColumnListItem type="Active" press="onPurchaseOrderPress">
                                         <cells>
-                                            <ObjectIdentifier title="{Ebeln}" />
+                                            <ObjectIdentifier title="{Ebeln}" titleActive="true" titlePress="onPurchaseOrderPress" />
                                             <Text text="{Lifnr}" />
                                             <Text text="{Bukrs}" />
                                             <Text text="{Bedat}" />
@@ -51,8 +64,8 @@
                     <IconTabFilter key="materials" text="{i18n>materialsStock}" icon="sap-icon://product">
                         <VBox class="sapUiSmallMargin">
                             <Title text="{i18n>materialCatalog}" level="H3" />
-                            <Table id="materialTable" items="{/MaterialSet}" growing="true" growingThreshold="20" noDataText="{i18n>noMaterials}">
-                                <headerToolbar><Toolbar><ToolbarSpacer /><SearchField width="12rem" placeholder="{i18n>searchMaterial}" liveChange="onMaterialSearch" /></Toolbar></headerToolbar>
+                            <Table id="materialTable" items="{/MaterialSet}" growing="true" growingThreshold="20" noDataText="{i18n>noMaterials}" updateFinished="onMaterialTableUpdateFinished">
+                                <headerToolbar><Toolbar><ToolbarSpacer /><SearchField width="12rem" placeholder="{i18n>searchMaterial}" search="onMaterialSearch" liveChange="onMaterialSearch" /></Toolbar></headerToolbar>
                                 <columns>
                                     <Column><Text text="{i18n>material}" /></Column>
                                     <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>materialType}" /></Column>
@@ -64,8 +77,8 @@
                                 </items>
                             </Table>
                             <Title text="{i18n>stockOverview}" level="H3" class="sapUiMediumMarginTop" />
-                            <Table id="stockTable" items="{/StockSet}" growing="true" growingThreshold="20" noDataText="{i18n>noStock}">
-                            <headerToolbar><Toolbar><Title text="{i18n>stockOverview}" /><ToolbarSpacer /><SearchField width="12rem" liveChange="onStockSearch" /></Toolbar></headerToolbar>
+                            <Table id="stockTable" items="{/StockSet}" growing="true" growingThreshold="20" noDataText="{i18n>noStock}" updateFinished="onStockTableUpdateFinished">
+                            <headerToolbar><Toolbar><Title text="{i18n>stockOverview}" /><ToolbarSpacer /><SearchField width="12rem" search="onStockSearch" liveChange="onStockSearch" /></Toolbar></headerToolbar>
                             <columns>
                                 <Column><Text text="{i18n>material}" /></Column>
                                 <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>plant}" /></Column>
@@ -82,8 +95,15 @@
                     </IconTabFilter>
                     <IconTabFilter key="goodsReceipt" text="{i18n>goodsReceipts}" icon="sap-icon://shipping-status">
                         <VBox class="sapUiSmallMargin">
-                            <Toolbar><Title text="{i18n>goodsReceipts}" /><ToolbarSpacer /><Button text="{i18n>postGoodsReceipt}" icon="sap-icon://add" type="Emphasized" press="onOpenGoodsReceipt" /></Toolbar>
                             <Table id="goodsReceiptTable" items="{/GoodsReceiptSet}" growing="true" growingThreshold="20" noDataText="{i18n>noGoodsReceipts}">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <Title text="{i18n>goodsReceipts}" />
+                                        <ToolbarSpacer />
+                                        <SearchField width="14rem" placeholder="{i18n>searchGrPlaceholder}" search="onGRSearch" liveChange="onGRSearch" />
+                                        <Button text="{i18n>postGoodsReceipt}" icon="sap-icon://add" type="Emphasized" press="onOpenGoodsReceipt" />
+                                    </OverflowToolbar>
+                                </headerToolbar>
                                 <columns>
                                     <Column><Text text="{i18n>poNumber}" /></Column>
                                     <Column><Text text="{i18n>poItem}" /></Column>
